@@ -16,14 +16,32 @@ class _MyMainPageState extends State<MyMainPage> {
     return Scaffold(
       appBar: AppBar(
         title: Text(widget.title),
+        actions: <Widget>[
+          IconButton(
+            icon: Icon(Icons.add),
+            tooltip: "Add Recipe",
+            onPressed: (){
+              // I need to figure out how to add more list tiles from here
+            },
+          ),
+        ],
       ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            
-          ],
-        ),
+      drawer: Drawer(
+        //Gotta add some things later here
+        //Still have to decide what settings or features are gonna be here
+      ),
+      body: ListView(
+        children: <Widget>[
+          ListTile(
+            title: Text('Recipe 1'),
+          ),
+          ListTile(
+            title: Text('Recipe 2'),
+          ),
+          ListTile(
+            title: Text('Recipe 3'),
+          ),
+        ]
       ),
     );
   }
