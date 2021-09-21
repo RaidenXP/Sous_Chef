@@ -12,7 +12,6 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Sous Chef',
       theme: ThemeData(
-
         primarySwatch: Colors.blue,
       ),
       home: MyMainPage(title: 'Sous Chef'),

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:my_app_project/recipe_info_page.dart';
 
 class MyMainPage extends StatefulWidget {
   MyMainPage({Key? key, required this.title}) : super(key: key);
@@ -11,7 +12,7 @@ class MyMainPage extends StatefulWidget {
 
 class _MyMainPageState extends State<MyMainPage> {
 
-  final List<String> entries = <String>['Recipe 1', 'Recipe2', 'Recipe 3'];
+  final List<String> entries = <String>['Recipe 1', 'Recipe 2', 'Recipe 3'];
 
   @override
   Widget build(BuildContext context) {
@@ -46,23 +47,41 @@ class _MyMainPageState extends State<MyMainPage> {
                   child: InkWell(
                     splashColor: Colors.blue.withAlpha(30),
                     onTap:(){
-                      print('Tapped');
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder:(context) => RecipeInfo())
+                      );
                     },
                     child: Row(
                       children: [
-                        Container(
-                          child: Image(
-                            color: Colors.teal,
-                            colorBlendMode: BlendMode.color,
-                            height: 100,
-                            width: 100,
-                            image: NetworkImage('https://cdn.shopify.com/s/files/1/0533/2089/files/placeholder-images-image_large.png?format=jpg&quality=90&v=1530129081'),
+                        Expanded(
+                          flex: 30,
+                          child: Container(
+                            child: Image(
+                              color: Colors.teal,
+                              colorBlendMode: BlendMode.color,
+                              image: NetworkImage('https://cdn.shopify.com/s/files/1/0533/2089/files/placeholder-images-image_large.png?format=jpg&quality=90&v=1530129081'),
+                            ),
                           ),
                         ),
-                        Container(
-                          margin: EdgeInsets.all(20.0),
-                          child: Text(
-                            '${entries[index]}'
+                        Expanded(
+                          flex: 50,
+                          child: Container(
+                            margin: EdgeInsets.all(20.0),
+                            child: Text(
+                                '${entries[index]}'
+                           ),
+                          ),
+                        ),
+                        Expanded(
+                          flex: 20,
+                          child: Container(
+                            child: IconButton(
+                              icon: Icon(Icons.more_vert_rounded),
+                              onPressed: (){
+                                // Will add feature to delete and edit
+                              },
+                            ),
                           ),
                         ),
                       ],
