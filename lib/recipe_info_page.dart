@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+//import 'package:flutter_quill/flutter_quill.dart';
 
 class RecipeInfo extends StatefulWidget {
   const RecipeInfo({Key? key}) : super(key: key);
@@ -31,14 +32,21 @@ class _RecipeInfoState extends State<RecipeInfo> {
               ),
             ),
           ),
-          SliverList(
-            delegate: SliverChildBuilderDelegate(
-                  (content, index) => ListTile(title: Text('Steps')),
-              childCount: 25,
-            ),
-          ),
+          SliverToBoxAdapter(
+           child: _CustomWidgetForInputText(),
+          )
         ],
       ),
+    );
+  }
+}
+
+class _CustomWidgetForInputText extends StatelessWidget{
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      
     );
   }
 }
