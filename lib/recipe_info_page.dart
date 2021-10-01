@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-//import 'package:flutter_quill/flutter_quill.dart';
 
 class RecipeInfo extends StatefulWidget {
   const RecipeInfo({Key? key}) : super(key: key);
@@ -11,42 +10,27 @@ class RecipeInfo extends StatefulWidget {
 class _RecipeInfoState extends State<RecipeInfo> {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: CustomScrollView(
-        slivers: [
-          SliverAppBar(
-            pinned: false,
-            floating: false,
-            backgroundColor: Colors.purple,
-            expandedHeight: 160.0,
-            flexibleSpace: FlexibleSpaceBar(
-              title: Text(
-                'Food Name',
-                style: TextStyle(
-                  color: Colors.black,
-                ),
-              ),
-              background: Image.network(
-                'https://cdn.shopify.com/s/files/1/0533/2089/files/placeholder-images-image_large.png?format=jpg&quality=90&v=1530129081',
-                fit: BoxFit.cover,
-              ),
+    return DefaultTabController(
+        length: 3,
+        child: Scaffold(
+          appBar: AppBar(
+            title: Text("Food Name Here"),
+            bottom: TabBar(
+              tabs: [
+                Tab(child: Text("Steps")),
+                Tab(child: Text("Ingredients")),
+                Tab(child: Text("Media"))
+              ],
             ),
           ),
-          SliverToBoxAdapter(
-           child: _CustomWidgetForInputText(),
-          )
-        ],
-      ),
-    );
-  }
-}
-
-class _CustomWidgetForInputText extends StatelessWidget{
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      
+          body: TabBarView(
+            children: [
+              Center(child: Text("Steps")),
+              Center(child: Text("Ingredients")),
+              Center(child: Text("Media"))
+            ],
+          ),
+        ),
     );
   }
 }
