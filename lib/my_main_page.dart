@@ -42,6 +42,7 @@ class _MyMainPageState extends State<MyMainPage> {
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(10),
                   ),
+                  elevation: 15,
                   margin: EdgeInsets.all(10.0),
                   color: Colors.tealAccent,
                   child: InkWell(
