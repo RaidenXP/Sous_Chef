@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 
 class RecipeInfo extends StatefulWidget {
-  const RecipeInfo({Key? key}) : super(key: key);
+
+  var recipeDetails;
+
+  RecipeInfo(this.recipeDetails);
 
   @override
   _RecipeInfoState createState() => _RecipeInfoState();
@@ -14,19 +17,19 @@ class _RecipeInfoState extends State<RecipeInfo> {
         length: 3,
         child: Scaffold(
           appBar: AppBar(
-            title: Text("Food Name Here"),
+            title: Text("${widget.recipeDetails.name}"),
             bottom: TabBar(
               tabs: [
-                Tab(child: Text("Steps")),
                 Tab(child: Text("Ingredients")),
+                Tab(child: Text("Steps")),
                 Tab(child: Text("Media"))
               ],
             ),
           ),
           body: TabBarView(
             children: [
-              Center(child: Text("Steps")),
               Center(child: Text("Ingredients")),
+              Center(child: Text("Steps")),
               Center(child: Text("Media"))
             ],
           ),

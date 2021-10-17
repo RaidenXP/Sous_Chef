@@ -1,4 +1,7 @@
+import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
+import 'package:my_app_project/addRecipe.dart';
+import 'package:my_app_project/recipe.dart';
 import 'package:my_app_project/recipe_info_page.dart';
 
 class MyMainPage extends StatefulWidget {
@@ -12,7 +15,47 @@ class MyMainPage extends StatefulWidget {
 
 class _MyMainPageState extends State<MyMainPage> {
 
-  final List<String> entries = <String>['Recipe 1', 'Recipe 2', 'Recipe 3'];
+  var entries = [];
+
+  _MyMainPageState(){
+    //load into the entries list above
+    refresh();
+    FirebaseDatabase.instance.reference().child("recipes").onChildChanged.listen((event) {
+      print("Data Changed");
+      refresh();
+    });
+    FirebaseDatabase.instance.reference().child("recipes").onChildRemoved.listen((event) {
+      print("Data Removed");
+      refresh();
+    });
+    FirebaseDatabase.instance.reference().child("recipes").onChildAdded.listen((event) {
+      print("Data Added");
+      refresh();
+    });
+  }
+
+  void refresh(){
+    FirebaseDatabase.instance.reference().child("recipes").once()
+        .then((datasnapshot) {
+      if(datasnapshot.exists){
+        print("Successfully loaded the data");
+        var tempList = [];
+        datasnapshot.value.forEach((k, v){
+          Recipe tempItem = Recipe(name: v['name']);
+          tempList.add(tempItem);
+        });
+        entries = tempList;
+      }
+      else {
+        print("No data");
+      }
+      setState(() {
+
+      });
+    }).catchError((error) {
+      print("Failed to load the data");
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -24,7 +67,10 @@ class _MyMainPageState extends State<MyMainPage> {
             icon: Icon(Icons.add),
             tooltip: "Add Recipe",
             onPressed: (){
-              // I need to figure out how to add more list tiles from here
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(builder:(context) => AddRecipePage())
+              );
             },
           ),
         ],
@@ -50,7 +96,7 @@ class _MyMainPageState extends State<MyMainPage> {
                     onTap:(){
                       Navigator.push(
                         context,
-                        MaterialPageRoute(builder:(context) => RecipeInfo())
+                        MaterialPageRoute(builder:(context) => RecipeInfo(entries[index]))
                       );
                     },
                     child: Row(
@@ -70,7 +116,7 @@ class _MyMainPageState extends State<MyMainPage> {
                           child: Container(
                             margin: EdgeInsets.all(20.0),
                             child: Text(
-                                '${entries[index]}'
+                                '${entries[index].name}'
                            ),
                           ),
                         ),
