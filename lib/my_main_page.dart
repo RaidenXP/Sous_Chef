@@ -57,6 +57,8 @@ class _MyMainPageState extends State<MyMainPage> {
     });
   }
 
+
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -123,11 +125,12 @@ class _MyMainPageState extends State<MyMainPage> {
                         Expanded(
                           flex: 20,
                           child: Container(
-                            child: IconButton(
+                            child: PopupMenuButton(
+                              itemBuilder: (context) => [
+                                PopupMenuItem(child: Text("Edit")),
+                                PopupMenuItem(child: Text("Delete"))
+                              ],
                               icon: Icon(Icons.more_vert_rounded),
-                              onPressed: (){
-                                // Will add feature to delete and edit
-                              },
                             ),
                           ),
                         ),
