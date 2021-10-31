@@ -1,7 +1,9 @@
+import 'dart:io';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:path/path.dart';
 
 class AddRecipePage extends StatefulWidget {
   const AddRecipePage({Key? key}) : super(key: key);
@@ -14,6 +16,18 @@ class _AddRecipePage extends State<AddRecipePage> {
 
   var nameController = TextEditingController();
 
+  File _imageFile = new File('');
+  final picker = ImagePicker();
+
+  Future pickImage() async {
+    final pickedFile = await picker.pickImage(source: ImageSource.gallery);
+
+    setState(() {
+      _imageFile = File(pickedFile!.path);
+      print(_imageFile.path);
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -21,21 +35,50 @@ class _AddRecipePage extends State<AddRecipePage> {
         child: Container(
           child: Column(
             children: [
-              FittedBox(
-                fit: BoxFit.contain,
-                child: InkWell(
-                  child: Image(
-                    image: NetworkImage("https://cdn.shopify.com/s/files/1/0533/2089/files/placeholder-images-image_large.png?format=jpg&quality=90&v=1530129081"),
-                  ),
-                  splashColor: Colors.blue.withAlpha(30),
-                  onTap: (){
-                    //will implement
-                    print("hi");
-                  },
+              Container(
+                padding: EdgeInsets.only(top: 100.0),
+                color: Colors.white,
+                child: Column(
+                  children: [
+                    Container(
+                      margin: EdgeInsets.all(15),
+                      padding: EdgeInsets.all(5),
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.all(
+                          Radius.circular(15),
+                        ),
+                        border: Border.all(color: Colors.white),
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.black12,
+                            offset: Offset(2, 2),
+                            spreadRadius: 2,
+                            blurRadius: 1,
+                          ),
+                        ],
+                      ),
+                      child: InkWell(
+                        child: (_imageFile.path != '')
+                        ? Image.file(_imageFile)
+                        : Image.network('https://i.imgur.com/sUFH1Aq.png'),
+                        onTap: (){
+                          pickImage();
+                        },
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              Text(
+                "Upload Image from Gallery",
+                style: TextStyle(
+                  color: Colors.grey,
+                  fontWeight: FontWeight.bold
                 ),
               ),
               Container(
-                padding: EdgeInsets.all(20.0),
+                padding: EdgeInsets.only(top: 80.0, left: 20.0, right: 20.0, bottom: 30.0),
                 child: TextFormField(
                   controller: nameController,
                   decoration: InputDecoration(
@@ -63,16 +106,20 @@ class _AddRecipePage extends State<AddRecipePage> {
                 child: Text("Add Recipe"),
                 onPressed: (){
                   var timestamp = new DateTime.now().millisecondsSinceEpoch;
+                  var pathName = basename(_imageFile.path);
 
                   FirebaseDatabase.instance.reference().child("recipes/recipe" + timestamp.toString()).set(
                     {
                       "name" : nameController.text,
+                      "imagePath" : _imageFile.path,
                     }
                   ).then((value){
                     print("Succesfully added!");
                   }).catchError((error){
                     print("Failed to add. " + error.toString());
                   });
+
+                  FirebaseStorage.instance.ref().child("food_images/" + pathName).putFile(_imageFile);
 
                   Navigator.pop(
                     context

@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
 import 'my_main_page.dart';
+import 'package:firebase_core/firebase_core.dart';
 
-void main() {
+void main() async{
+  WidgetsFlutterBinding.ensureInitialized();
   runApp(MyApp());
 }
 
 class MyApp extends StatelessWidget {
+  final Future<FirebaseApp> _fbApp = Firebase.initializeApp();
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
@@ -15,7 +18,21 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: MyMainPage(title: 'Sous Chef'),
+      home: FutureBuilder(
+        future: _fbApp,
+        builder: (context, snapshot) {
+          if(snapshot.hasError){
+            print("ERROR! ${snapshot.error.toString()}");
+            return Text("Something went wrong!");
+          }else if(snapshot.hasData){
+            return MyMainPage(title: 'Sous Chef');
+          }else{
+            return Center(
+              child: CircularProgressIndicator(),
+            );
+          }
+        },
+      ) ,
     );
   }
 }

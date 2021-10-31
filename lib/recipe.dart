@@ -4,11 +4,13 @@ class Recipe{
 
   Recipe({
     required this.name,
+    required this.image,
   });
 
   factory Recipe.fromJson(Map<String, dynamic> json){
     return Recipe(
       name: json['name'],
+      image: json['imagePath'],
     );
   }
 }

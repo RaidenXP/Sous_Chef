@@ -33,6 +33,7 @@ dependencies:
   cupertino_icons: ^1.0.2
   flutter_quill: ^2.0.5
   image_picker: ^0.8.4+3
+  permission_handler: ^8.2.5
 
 dev_dependencies:
   flutter_test:
