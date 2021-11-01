@@ -16,6 +16,7 @@ class MyMainPage extends StatefulWidget {
 class _MyMainPageState extends State<MyMainPage> {
 
   var entries = [];
+  var urlImage;
 
   _MyMainPageState(){
     //load into the entries list above
@@ -67,7 +68,7 @@ class _MyMainPageState extends State<MyMainPage> {
           IconButton(
             icon: Icon(Icons.add),
             tooltip: "Add Recipe",
-            onPressed: (){
+            onPressed: () {
               Navigator.push(
                   context,
                   MaterialPageRoute(builder:(context) => AddRecipePage())
@@ -106,9 +107,7 @@ class _MyMainPageState extends State<MyMainPage> {
                           flex: 30,
                           child: Container(
                             child: Image(
-                              color: Colors.teal,
-                              colorBlendMode: BlendMode.color,
-                              image: NetworkImage('https://cdn.shopify.com/s/files/1/0533/2089/files/placeholder-images-image_large.png?format=jpg&quality=90&v=1530129081'),
+                              image: NetworkImage(entries[index].image),
                             ),
                           ),
                         ),
@@ -117,7 +116,7 @@ class _MyMainPageState extends State<MyMainPage> {
                           child: Container(
                             margin: EdgeInsets.all(20.0),
                             child: Text(
-                                '${entries[index].name}'
+                                entries[index].name
                            ),
                           ),
                         ),

@@ -104,25 +104,49 @@ class _AddRecipePage extends State<AddRecipePage> {
               ),
               ElevatedButton(
                 child: Text("Add Recipe"),
-                onPressed: (){
+                onPressed: () async{
                   var timestamp = new DateTime.now().millisecondsSinceEpoch;
-                  var pathName = basename(_imageFile.path);
+                  var url;
 
-                  FirebaseDatabase.instance.reference().child("recipes/recipe" + timestamp.toString()).set(
-                    {
-                      "name" : nameController.text,
-                      "imagePath" : _imageFile.path,
-                    }
-                  ).then((value){
-                    print("Succesfully added!");
-                  }).catchError((error){
-                    print("Failed to add. " + error.toString());
-                  });
+                  if(_imageFile.path != ''){
+                    await FirebaseStorage.instance.ref().child("food_images/" + timestamp.toString()).putFile(_imageFile);
 
-                  FirebaseStorage.instance.ref().child("food_images/" + pathName).putFile(_imageFile);
+                    var downloadUrl = await FirebaseStorage.instance.ref().child("food_images/" + timestamp.toString()).getDownloadURL()
+                        .then((value) {
+                          print("Url: " + value.toString());
+                          url = value.toString();
+                        }).catchError((error) {
+                          print("Failed");
+                        });
+
+                    FirebaseDatabase.instance.reference().child("recipes/recipe" + timestamp.toString()).set(
+                        {
+                          "name" : nameController.text,
+                          "imagePath" : url,
+                        }
+                    ).then((value){
+                      print("Succesfully added!");
+                    }).catchError((error){
+                      print("Failed to add. " + error.toString());
+                    });
+
+                  }else{
+                    FirebaseDatabase.instance.reference().child("recipes/recipe" + timestamp.toString()).set(
+                        {
+                          "name" : nameController.text,
+                          "imagePath" : "https://cdn.shopify.com/s/files/1/0533/2089/files/placeholder-images-image_large.png?format=jpg&quality=90&v=1530129081",
+                        }
+                    ).then((value){
+                      print("Succesfully added!");
+                    }).catchError((error){
+                      print("Failed to add. " + error.toString());
+                    });
+
+                  }
+
 
                   Navigator.pop(
-                    context
+                    context,
                   );
                 },
               )
