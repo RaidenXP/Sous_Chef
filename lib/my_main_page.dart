@@ -42,7 +42,7 @@ class _MyMainPageState extends State<MyMainPage> {
         print("Successfully loaded the data");
         var tempList = [];
         datasnapshot.value.forEach((k, v){
-          Recipe tempItem = Recipe(name: v['name'], image: v['imagePath']);
+          Recipe tempItem = Recipe(id: v['id'], name: v['name'], image: v['imagePath']);
           tempList.add(tempItem);
         });
         entries = tempList;

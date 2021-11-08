@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:my_app_project/addIngredient.dart';
-import 'package:my_app_project/addStep.dart';
+import 'package:my_app_project/ingredientTab.dart';
+import 'package:my_app_project/stepsTab.dart';
 
 class RecipeInfo extends StatefulWidget {
 
@@ -30,43 +30,12 @@ class _RecipeInfoState extends State<RecipeInfo> {
           ),
           body: TabBarView(
             children: [
-              Center(child: _IngredientsTab()),
-              Center(child: _StepsTab()),
+              Center(child: IngredientTab(widget.recipeDetails)),
+              Center(child: StepsTab(widget.recipeDetails)),
               Center(child: _MediaTab())
             ],
           ),
         ),
-    );
-  }
-}
-
-class _IngredientsTab extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      floatingActionButton: FloatingActionButton(
-        onPressed: (){
-
-        },
-        child: Icon(Icons.add),
-      ),
-    );
-  }
-}
-
-class _StepsTab extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      floatingActionButton: FloatingActionButton(
-        onPressed: (){
-          Navigator.push(
-              context,
-              MaterialPageRoute(builder:(context) => )
-          );
-        },
-        child: Icon(Icons.add),
-      ),
     );
   }
 }
