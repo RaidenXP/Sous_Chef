@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:my_app_project/addIngredient.dart';
+
 
 class RecipeInfo extends StatefulWidget {
 
@@ -28,12 +30,57 @@ class _RecipeInfoState extends State<RecipeInfo> {
           ),
           body: TabBarView(
             children: [
-              Center(child: Text("Ingredients")),
-              Center(child: Text("Steps")),
-              Center(child: Text("Media"))
+              Center(child: _IngredientsTab()),
+              Center(child: _StepsTab()),
+              Center(child: _MediaTab())
             ],
           ),
         ),
+    );
+  }
+}
+
+class _IngredientsTab extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      floatingActionButton: FloatingActionButton(
+        onPressed: (){
+          Navigator.push(
+              context,
+              MaterialPageRoute(builder:(context) => AddIngredientPage())
+          );
+        },
+        child: Icon(Icons.add),
+      ),
+    );
+  }
+}
+
+class _StepsTab extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      floatingActionButton: FloatingActionButton(
+        onPressed: (){
+
+        },
+        child: Icon(Icons.add),
+      ),
+    );
+  }
+}
+
+class _MediaTab extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      floatingActionButton: FloatingActionButton(
+        onPressed: (){
+
+        },
+        child: Icon(Icons.add),
+      ),
     );
   }
 }

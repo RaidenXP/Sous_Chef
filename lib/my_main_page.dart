@@ -58,6 +58,9 @@ class _MyMainPageState extends State<MyMainPage> {
     });
   }
 
+  void delete(String name){
+
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -125,9 +128,12 @@ class _MyMainPageState extends State<MyMainPage> {
                           child: Container(
                             child: PopupMenuButton(
                               itemBuilder: (context) => [
-                                PopupMenuItem(child: Text("Edit")),
-                                PopupMenuItem(child: Text("Delete"))
+                                PopupMenuItem(child: Text("Edit"), value: 'edit',),
+                                PopupMenuItem(child: Text("Delete"), value: 'delete',)
                               ],
+                              onSelected: (value){
+
+                              },
                               icon: Icon(Icons.more_vert_rounded),
                             ),
                           ),
