@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:my_app_project/addIngredient.dart';
-
+import 'package:my_app_project/addStep.dart';
 
 class RecipeInfo extends StatefulWidget {
 
@@ -46,10 +46,7 @@ class _IngredientsTab extends StatelessWidget {
     return Scaffold(
       floatingActionButton: FloatingActionButton(
         onPressed: (){
-          Navigator.push(
-              context,
-              MaterialPageRoute(builder:(context) => AddIngredientPage())
-          );
+
         },
         child: Icon(Icons.add),
       ),
@@ -63,7 +60,10 @@ class _StepsTab extends StatelessWidget {
     return Scaffold(
       floatingActionButton: FloatingActionButton(
         onPressed: (){
-
+          Navigator.push(
+              context,
+              MaterialPageRoute(builder:(context) => )
+          );
         },
         child: Icon(Icons.add),
       ),

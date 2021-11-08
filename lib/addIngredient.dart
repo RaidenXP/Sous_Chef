@@ -10,6 +10,8 @@ class _AddIngredientPage extends StatefulWidget {
 class _AddIngredientPageState extends State<_AddIngredientPage> {
   @override
   Widget build(BuildContext context) {
-    return Container();
+    return Scaffold(
+
+    );
   }
 }
