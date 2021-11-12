@@ -32,7 +32,7 @@ class _RecipeInfoState extends State<RecipeInfo> {
             children: [
               Center(child: IngredientTab(widget.recipeDetails)),
               Center(child: StepsTab(widget.recipeDetails)),
-              Center(child: _MediaTab())
+              Center(child: Text("Work In Progress"))
             ],
           ),
         ),
@@ -46,7 +46,7 @@ class _MediaTab extends StatelessWidget {
     return Scaffold(
       floatingActionButton: FloatingActionButton(
         onPressed: (){
-
+          //WIP
         },
         child: Icon(Icons.add),
       ),

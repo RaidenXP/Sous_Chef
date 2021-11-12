@@ -39,7 +39,42 @@ class _StepsTabState extends State<StepsTab> {
         },
         child: Icon(Icons.add),
       ),
-      body: (description != null) ? Text(description.toString()) : Center(),
+      body: (description != null) ? _DescriptionWidget(description.toString()) : Center(),
+    );
+  }
+}
+
+class _DescriptionWidget extends StatelessWidget {
+  var description;
+
+  _DescriptionWidget(this.description);
+
+  @override
+  Widget build(BuildContext context) {
+    return Card(
+      margin: EdgeInsets.all(10.0),
+      child: Container(
+        width: 500,
+        decoration: BoxDecoration(
+            gradient: LinearGradient(
+                colors: [Colors.redAccent, Colors.red],
+                begin: Alignment.topLeft,
+                end: Alignment.bottomCenter
+            )
+        ),
+        child: Padding(
+          padding: const EdgeInsets.all(15.0),
+          child: Text(
+            description,
+            style: TextStyle(color: Colors.white),
+          ),
+        ),
+      ),
+      shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(24)
+      ),
+      elevation: 15,
+      clipBehavior: Clip.antiAlias,
     );
   }
 }
