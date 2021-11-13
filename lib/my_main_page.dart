@@ -1,6 +1,9 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_database/firebase_database.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:my_app_project/addRecipe.dart';
+import 'package:my_app_project/editRecipe.dart';
 import 'package:my_app_project/recipe.dart';
 import 'package:my_app_project/recipe_info_page.dart';
 
@@ -48,18 +51,60 @@ class _MyMainPageState extends State<MyMainPage> {
         entries = tempList;
       }
       else {
+        entries = [];
         print("No data");
       }
+
       setState(() {
 
       });
+
     }).catchError((error) {
       print("Failed to load the data");
     });
   }
 
-  void delete(String option){
+  void delete(int index){
+    FirebaseDatabase.instance.reference().child("recipes/recipe" + "${entries[index].id}").remove();
 
+    FirebaseStorage.instance.ref().child("food_images/" + "${entries[index].id}").delete();
+
+    setState(() {
+
+    });
+  }
+
+  showAlertDialog(BuildContext context, int index){
+    Widget cancelButton = TextButton(
+      onPressed: (){
+        Navigator.pop(context, 'Cancel');
+      },
+      child: Text("Cancel"),
+    );
+
+    Widget confirmButton = TextButton(
+      onPressed: (){
+        delete(index);
+        Navigator.pop(context, 'Confirm');
+      },
+      child: Text("Confirm"),
+    );
+
+    AlertDialog alert = AlertDialog(
+      title: Text("Delete"),
+      content: Text("Are you sure you want to delete this recipe?"),
+      actions: [
+        cancelButton,
+        confirmButton,
+      ],
+    );
+
+    showDialog(
+        context: context,
+        builder: (BuildContext context){
+          return alert;
+        }
+    );
   }
 
   @override
@@ -132,7 +177,14 @@ class _MyMainPageState extends State<MyMainPage> {
                                 PopupMenuItem(child: Text("Delete"), value: 'delete',)
                               ],
                               onSelected: (value){
-
+                                if(value == 'delete') {
+                                  showAlertDialog(context, index);
+                                } else if (value == 'edit'){
+                                  Navigator.push(
+                                      context,
+                                      MaterialPageRoute(builder:(context) => EditRecipePage(entries[index]))
+                                  );
+                                }
                               },
                               icon: Icon(Icons.more_vert_rounded),
                             ),
