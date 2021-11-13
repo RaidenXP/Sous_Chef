@@ -58,7 +58,7 @@ class _MyMainPageState extends State<MyMainPage> {
     });
   }
 
-  void delete(String name){
+  void delete(String option){
 
   }
 
