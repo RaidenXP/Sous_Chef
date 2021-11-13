@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "466796761034",
+    "project_id": "mobileappfall21",
+    "storage_bucket": "mobileappfall21.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:466796761034:android:15af304e773ed2482b8933",
+        "android_client_info": {
+          "package_name": "com.tranNathan.my_app_project"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "466796761034-dl7jmroe3dlsr7ep2al1hv8aglkqd8l7.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAn8-u8k28uaaQJAwDZsCcehjcoDiV1XyE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "466796761034-dl7jmroe3dlsr7ep2al1hv8aglkqd8l7.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
