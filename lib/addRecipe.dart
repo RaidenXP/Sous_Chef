@@ -111,9 +111,11 @@ class _AddRecipePage extends State<AddRecipePage> {
                   var url;
 
                   if(_imageFile.path != ''){
-                    await FirebaseStorage.instance.ref().child("food_images/" + timestamp.toString()).putFile(_imageFile);
+                    await FirebaseStorage.instance.ref().child("food_images/recipe" + timestamp.toString() + "/image0")
+                        .putFile(_imageFile);
 
-                    var downloadUrl = await FirebaseStorage.instance.ref().child("food_images/" + timestamp.toString()).getDownloadURL()
+                    var downloadUrl = await FirebaseStorage.instance.ref()
+                        .child("food_images/recipe" + timestamp.toString()+ "/image0").getDownloadURL()
                         .then((value) {
                           print("Url: " + value.toString());
                           url = value.toString();

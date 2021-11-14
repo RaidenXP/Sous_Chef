@@ -1,4 +1,3 @@
-import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
@@ -19,7 +18,6 @@ class MyMainPage extends StatefulWidget {
 class _MyMainPageState extends State<MyMainPage> {
 
   var entries = [];
-  var urlImage;
 
   _MyMainPageState(){
     //load into the entries list above
@@ -48,6 +46,7 @@ class _MyMainPageState extends State<MyMainPage> {
           Recipe tempItem = Recipe(id: v['id'], name: v['name'], image: v['imagePath']);
           tempList.add(tempItem);
         });
+
         entries = tempList;
       }
       else {
@@ -64,10 +63,14 @@ class _MyMainPageState extends State<MyMainPage> {
     });
   }
 
-  void delete(int index){
+  void delete(int index) async{
     FirebaseDatabase.instance.reference().child("recipes/recipe" + "${entries[index].id}").remove();
 
-    FirebaseStorage.instance.ref().child("food_images/" + "${entries[index].id}").delete();
+    var result = await FirebaseStorage.instance.ref().child("food_images/recipe" + "${entries[index].id}").listAll();
+
+    result.items.forEach((element) {
+      element.delete();
+    });
 
     setState(() {
 

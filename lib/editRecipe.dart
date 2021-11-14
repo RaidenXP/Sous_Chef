@@ -107,13 +107,19 @@ class _EditRecipePage extends State<EditRecipePage> {
                 child: Text("Confirm Recipe"),
                 onPressed: () async{
                   var url;
+                  var result = await FirebaseStorage.instance.ref().child("food_images/recipe" + "${recipeDetails.id}/").listAll();
+                  var num = 0;
+                  result.items.forEach((element) {
+                    ++num;
+                  });
 
                   if(_imageFile.path != ''){
-                    FirebaseStorage.instance.ref().child("food_images/" + "${recipeDetails.id}").delete();
+                    await FirebaseStorage.instance.ref()
+                        .child("food_images/recipe" + "${recipeDetails.id}/image" + num.toString())
+                        .putFile(_imageFile);
 
-                    await FirebaseStorage.instance.ref().child("food_images/" + "${recipeDetails.id}").putFile(_imageFile);
-
-                    var downloadUrl = await FirebaseStorage.instance.ref().child("food_images/" + "${recipeDetails.id}").getDownloadURL()
+                    var downloadUrl = await FirebaseStorage.instance.ref()
+                        .child("food_images/recipe" + "${recipeDetails.id}/image" + num.toString()).getDownloadURL()
                         .then((value) {
                       print("Url: " + value.toString());
                       url = value.toString();
@@ -130,7 +136,6 @@ class _EditRecipePage extends State<EditRecipePage> {
                     }).catchError((error){
                       print("Failed to add. " + error.toString());
                     });
-
 
                     if(nameController.text != '') {
                       FirebaseDatabase.instance.reference().child("recipes/recipe" + "${recipeDetails.id}").update(

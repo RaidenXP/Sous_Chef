@@ -17,7 +17,7 @@ class _AddStepPageState extends State<AddStepPage> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          title: Text("Add Ingredients"),
+          title: Text("Add Steps"),
           actions: [
             IconButton(
               onPressed: (){
