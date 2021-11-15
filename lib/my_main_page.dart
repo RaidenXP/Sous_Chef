@@ -1,6 +1,8 @@
 import 'package:firebase_database/firebase_database.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:my_app_project/addRecipe.dart';
+import 'package:my_app_project/editRecipe.dart';
 import 'package:my_app_project/recipe.dart';
 import 'package:my_app_project/recipe_info_page.dart';
 
@@ -16,7 +18,6 @@ class MyMainPage extends StatefulWidget {
 class _MyMainPageState extends State<MyMainPage> {
 
   var entries = [];
-  var urlImage;
 
   _MyMainPageState(){
     //load into the entries list above
@@ -45,21 +46,68 @@ class _MyMainPageState extends State<MyMainPage> {
           Recipe tempItem = Recipe(id: v['id'], name: v['name'], image: v['imagePath']);
           tempList.add(tempItem);
         });
+
         entries = tempList;
       }
       else {
+        entries = [];
         print("No data");
       }
+
       setState(() {
 
       });
+
     }).catchError((error) {
       print("Failed to load the data");
     });
   }
 
-  void delete(String option){
+  void delete(int index) async{
+    FirebaseDatabase.instance.reference().child("recipes/recipe" + "${entries[index].id}").remove();
 
+    var result = await FirebaseStorage.instance.ref().child("food_images/recipe" + "${entries[index].id}").listAll();
+
+    result.items.forEach((element) {
+      element.delete();
+    });
+
+    setState(() {
+
+    });
+  }
+
+  showAlertDialog(BuildContext context, int index){
+    Widget cancelButton = TextButton(
+      onPressed: (){
+        Navigator.pop(context, 'Cancel');
+      },
+      child: Text("Cancel"),
+    );
+
+    Widget confirmButton = TextButton(
+      onPressed: (){
+        delete(index);
+        Navigator.pop(context, 'Confirm');
+      },
+      child: Text("Confirm"),
+    );
+
+    AlertDialog alert = AlertDialog(
+      title: Text("Delete"),
+      content: Text("Are you sure you want to delete this recipe?"),
+      actions: [
+        cancelButton,
+        confirmButton,
+      ],
+    );
+
+    showDialog(
+        context: context,
+        builder: (BuildContext context){
+          return alert;
+        }
+    );
   }
 
   @override
@@ -132,7 +180,14 @@ class _MyMainPageState extends State<MyMainPage> {
                                 PopupMenuItem(child: Text("Delete"), value: 'delete',)
                               ],
                               onSelected: (value){
-
+                                if(value == 'delete') {
+                                  showAlertDialog(context, index);
+                                } else if (value == 'edit'){
+                                  Navigator.push(
+                                      context,
+                                      MaterialPageRoute(builder:(context) => EditRecipePage(entries[index]))
+                                  );
+                                }
                               },
                               icon: Icon(Icons.more_vert_rounded),
                             ),

@@ -16,6 +16,15 @@ class _IngredientTabState extends State<IngredientTab> {
   var description;
 
   _IngredientTabState(this.recipeDetails){
+    FirebaseDatabase.instance.reference().child("recipes").onChildChanged.listen((event) {
+      refresh();
+    });
+    FirebaseDatabase.instance.reference().child("recipes").onChildAdded.listen((event) {
+      refresh();
+    });
+  }
+
+  void refresh(){
     FirebaseDatabase.instance.reference().child("recipes/recipe" + "${recipeDetails.id}").once().then((datasnapshot){
       description = datasnapshot.value['ingredients'];
 
@@ -23,7 +32,7 @@ class _IngredientTabState extends State<IngredientTab> {
 
       });
     }).catchError((error){
-      print("Something went wrong in the recipeInfoPage");
+      print("Something went wrong in the recipeInfoPageIngred");
     });
   }
 

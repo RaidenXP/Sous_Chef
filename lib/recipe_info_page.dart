@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:my_app_project/ingredientTab.dart';
+import 'package:my_app_project/mediaTab.dart';
 import 'package:my_app_project/stepsTab.dart';
 
 class RecipeInfo extends StatefulWidget {
@@ -13,6 +14,7 @@ class RecipeInfo extends StatefulWidget {
 }
 
 class _RecipeInfoState extends State<RecipeInfo> {
+
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
@@ -32,24 +34,10 @@ class _RecipeInfoState extends State<RecipeInfo> {
             children: [
               Center(child: IngredientTab(widget.recipeDetails)),
               Center(child: StepsTab(widget.recipeDetails)),
-              Center(child: Text("Work In Progress"))
+              Center(child: MediaTab(widget.recipeDetails))
             ],
           ),
         ),
-    );
-  }
-}
-
-class _MediaTab extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      floatingActionButton: FloatingActionButton(
-        onPressed: (){
-          //WIP
-        },
-        child: Icon(Icons.add),
-      ),
     );
   }
 }

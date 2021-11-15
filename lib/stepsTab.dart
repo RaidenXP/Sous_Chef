@@ -16,6 +16,16 @@ class _StepsTabState extends State<StepsTab> {
   var description;
 
   _StepsTabState(this.recipeDetails){
+    refresh();
+    FirebaseDatabase.instance.reference().child("recipes").onChildChanged.listen((event) {
+      refresh();
+    });
+    FirebaseDatabase.instance.reference().child("recipes").onChildAdded.listen((event) {
+      refresh();
+    });
+  }
+
+  void refresh(){
     FirebaseDatabase.instance.reference().child("recipes/recipe" + "${recipeDetails.id}").once().then((datasnapshot){
       description = datasnapshot.value['steps'];
 
@@ -23,7 +33,7 @@ class _StepsTabState extends State<StepsTab> {
 
       });
     }).catchError((error){
-      print("Something went wrong in the recipeInfoPage");
+      print("Something went wrong in the recipeInfoPageSteps");
     });
   }
 

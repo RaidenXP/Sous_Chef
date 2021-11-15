@@ -4,14 +4,19 @@ import 'package:flutter/material.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:image_picker/image_picker.dart';
 
-class AddRecipePage extends StatefulWidget {
-  const AddRecipePage({Key? key}) : super(key: key);
+class EditRecipePage extends StatefulWidget {
+  var recipeDetails;
+
+  EditRecipePage(this.recipeDetails);
 
   @override
-  _AddRecipePage createState() => _AddRecipePage();
+  _EditRecipePage createState() => _EditRecipePage(recipeDetails);
 }
 
-class _AddRecipePage extends State<AddRecipePage> {
+class _EditRecipePage extends State<EditRecipePage> {
+  var recipeDetails;
+
+  _EditRecipePage(this.recipeDetails);
 
   var nameController = TextEditingController();
 
@@ -31,7 +36,7 @@ class _AddRecipePage extends State<AddRecipePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Add Recipe"),
+        title: Text("Edit Recipe"),
       ),
       body: SingleChildScrollView(
         child: Container(
@@ -62,8 +67,8 @@ class _AddRecipePage extends State<AddRecipePage> {
                       ),
                       child: InkWell(
                         child: (_imageFile.path != '')
-                        ? Image.file(_imageFile)
-                        : Image.network('https://i.imgur.com/sUFH1Aq.png'),
+                            ? Image.file(_imageFile)
+                            : Image.network(recipeDetails.image),
                         onTap: (){
                           pickImage();
                         },
@@ -73,60 +78,57 @@ class _AddRecipePage extends State<AddRecipePage> {
                 ),
               ),
               Text(
-                "Upload Image from Gallery",
+                "Upload Different Image from Gallery",
                 style: TextStyle(
-                  color: Colors.grey,
-                  fontWeight: FontWeight.bold
+                    color: Colors.grey,
+                    fontWeight: FontWeight.bold
                 ),
               ),
               Container(
                 padding: EdgeInsets.only(top: 80.0, left: 20.0, right: 20.0, bottom: 30.0),
                 child: TextFormField(
-                  controller: nameController,
-                  decoration: InputDecoration(
-                    contentPadding: EdgeInsets.all(10.0),
-                    border: OutlineInputBorder(borderRadius: BorderRadius.all(Radius.circular(32.0))),
-                    enabledBorder: OutlineInputBorder(
-                      borderSide: BorderSide(color: Colors.lightBlueAccent, width: 1.0),
-                      borderRadius: BorderRadius.all(Radius.circular(32.0))
+                    controller: nameController,
+                    decoration: InputDecoration(
+                      contentPadding: EdgeInsets.all(10.0),
+                      border: OutlineInputBorder(borderRadius: BorderRadius.all(Radius.circular(32.0))),
+                      enabledBorder: OutlineInputBorder(
+                          borderSide: BorderSide(color: Colors.lightBlueAccent, width: 1.0),
+                          borderRadius: BorderRadius.all(Radius.circular(32.0))
+                      ),
+                      focusedBorder: OutlineInputBorder(
+                          borderSide: BorderSide(color: Colors.lightBlueAccent, width: 2.0),
+                          borderRadius: BorderRadius.all(Radius.circular(32.0))
+                      ),
+                      labelText: recipeDetails.name,
                     ),
-                    focusedBorder: OutlineInputBorder(
-                      borderSide: BorderSide(color: Colors.lightBlueAccent, width: 2.0),
-                      borderRadius: BorderRadius.all(Radius.circular(32.0))
-                    ),
-                    labelText: 'Food Name Here',
-                  ),
-                  validator: (String? value){
-                    if(value != null && value.isEmpty){
-                      return 'Name is required';
-                    }
-                    return null;
-                  }
                 ),
               ),
               ElevatedButton(
-                child: Text("Add Recipe"),
+                child: Text("Confirm Recipe"),
                 onPressed: () async{
-                  var timestamp = new DateTime.now().millisecondsSinceEpoch;
                   var url;
+                  var result = await FirebaseStorage.instance.ref().child("food_images/recipe" + "${recipeDetails.id}/").listAll();
+                  var num = 0;
+                  result.items.forEach((element) {
+                    ++num;
+                  });
 
                   if(_imageFile.path != ''){
-                    await FirebaseStorage.instance.ref().child("food_images/recipe" + timestamp.toString() + "/image0")
+                    await FirebaseStorage.instance.ref()
+                        .child("food_images/recipe" + "${recipeDetails.id}/image" + num.toString())
                         .putFile(_imageFile);
 
                     var downloadUrl = await FirebaseStorage.instance.ref()
-                        .child("food_images/recipe" + timestamp.toString()+ "/image0").getDownloadURL()
+                        .child("food_images/recipe" + "${recipeDetails.id}/image" + num.toString()).getDownloadURL()
                         .then((value) {
-                          print("Url: " + value.toString());
-                          url = value.toString();
-                        }).catchError((error) {
-                          print("Failed");
-                        });
+                      print("Url: " + value.toString());
+                      url = value.toString();
+                    }).catchError((error) {
+                      print("Failed");
+                    });
 
-                    FirebaseDatabase.instance.reference().child("recipes/recipe" + timestamp.toString()).set(
+                    FirebaseDatabase.instance.reference().child("recipes/recipe" + "${recipeDetails.id}").update(
                         {
-                          "id": timestamp,
-                          "name" : nameController.text,
                           "imagePath" : url,
                         }
                     ).then((value){
@@ -135,12 +137,22 @@ class _AddRecipePage extends State<AddRecipePage> {
                       print("Failed to add. " + error.toString());
                     });
 
+                    if(nameController.text != '') {
+                      FirebaseDatabase.instance.reference().child("recipes/recipe" + "${recipeDetails.id}").update(
+                          {
+                            "name" : nameController.text,
+                          }
+                      ).then((value){
+                        print("Succesfully added!");
+                      }).catchError((error){
+                        print("Failed to add. " + error.toString());
+                      });
+                    }
+
                   }else{
-                    FirebaseDatabase.instance.reference().child("recipes/recipe" + timestamp.toString()).set(
+                    FirebaseDatabase.instance.reference().child("recipes/recipe" + "${recipeDetails.id}").update(
                         {
-                          "id": timestamp,
                           "name" : nameController.text,
-                          "imagePath" : "https://cdn.shopify.com/s/files/1/0533/2089/files/placeholder-images-image_large.png?format=jpg&quality=90&v=1530129081",
                         }
                     ).then((value){
                       print("Succesfully added!");
@@ -149,7 +161,6 @@ class _AddRecipePage extends State<AddRecipePage> {
                     });
 
                   }
-
 
                   Navigator.pop(
                     context,
