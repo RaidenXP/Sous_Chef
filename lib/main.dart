@@ -16,7 +16,7 @@ class MyApp extends StatelessWidget {
       title: 'Sous Chef',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
-        primarySwatch: Colors.blue,
+        primarySwatch: Colors.indigo,
       ),
       home: FutureBuilder(
         future: _fbApp,

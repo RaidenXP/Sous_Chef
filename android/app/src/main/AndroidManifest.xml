@@ -1,7 +1,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.tranNathan.my_app_project">
    <application
-        android:label="my_app_project"
+        android:label="Sous Chef"
         android:icon="@mipmap/launcher_icon">
         <activity
             android:name=".MainActivity"
