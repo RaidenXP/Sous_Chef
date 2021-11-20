@@ -32,9 +32,9 @@ class _RecipeInfoState extends State<RecipeInfo> {
           ),
           body: TabBarView(
             children: [
-              Center(child: IngredientTab(widget.recipeDetails)),
-              Center(child: StepsTab(widget.recipeDetails)),
-              Center(child: MediaTab(widget.recipeDetails))
+              IngredientTab(widget.recipeDetails),
+              StepsTab(widget.recipeDetails),
+              MediaTab(widget.recipeDetails)
             ],
           ),
         ),

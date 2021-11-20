@@ -61,30 +61,33 @@ class _DescriptionWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Card(
-      margin: EdgeInsets.all(10.0),
-      child: Container(
-        width: 500,
-        decoration: BoxDecoration(
-            gradient: LinearGradient(
-                colors: [Colors.redAccent, Colors.red],
-                begin: Alignment.topLeft,
-                end: Alignment.bottomCenter
-            )
-        ),
-        child: Padding(
-          padding: const EdgeInsets.all(15.0),
-          child: Text(
-            description,
-            style: TextStyle(color: Colors.white),
+    return ListView(
+        children: [
+          Card(
+            clipBehavior: Clip.antiAlias,
+            elevation: 15,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(16),
+            ),
+            child: Container(
+              padding: EdgeInsets.all(12),
+              decoration: BoxDecoration(
+                  gradient: LinearGradient(
+                      colors: [Color(0xB329124A), Colors.black],
+                      begin: Alignment.topLeft,
+                      end: Alignment.bottomRight
+                  )
+              ),
+              child: Text(
+                description,
+                style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 18
+                ),
+              ),
+            ),
           ),
-        ),
-      ),
-      shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(24)
-      ),
-      elevation: 15,
-      clipBehavior: Clip.antiAlias,
+        ]
     );
   }
 }
