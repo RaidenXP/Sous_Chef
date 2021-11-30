@@ -14,3 +14,15 @@ A few resources to get you started if this is your first Flutter project:
 For help getting started with Flutter, view our
 [online documentation](https://flutter.dev/docs), which offers tutorials,
 samples, guidance on mobile development, and a full API reference.
+
+## Landing Page
+
+https://souschef.carrd.co
+
+## Google Play Store Page
+
+https://play.google.com/store/apps/details?id=com.tranNathan.my_app_project
+
+## Future Plans
+
+Add authentication, ways to add more media, allow people to share!
